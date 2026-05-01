@@ -3,12 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>400 Score</title>
+    <title>400 Score - Ne3me Cell</title>
+    
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
     <style>
         :root {
             --primary: #2c3e50;
             --secondary: #27ae60;
             --danger: #e74c3c;
+            --warning: #f1c40f;
             --light: #ecf0f1;
         }
 
@@ -24,7 +31,7 @@
         }
 
         .container {
-            width: 90%;
+            width: 95%;
             max-width: 500px;
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
@@ -35,11 +42,9 @@
 
         .hidden { display: none; }
 
-        /* Splash Screen */
-        #splash-screen img { width: 150px; height: auto; margin-bottom: 20px; }
+        #splash-screen img { width: 120px; height: auto; margin-bottom: 15px; border-radius: 20px; }
 
-        /* Name Entry Page */
-        h1 { margin-bottom: 20px; color: var(--secondary); }
+        h1 { margin-bottom: 10px; color: var(--secondary); }
         .group-box {
             background: rgba(0,0,0,0.2);
             padding: 15px;
@@ -47,14 +52,25 @@
             border-radius: 10px;
             border: 1px solid var(--secondary);
         }
+        
+        .forced-badge {
+            background: var(--danger);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
         input[type="text"] {
             width: 80%;
             padding: 10px;
             margin: 5px 0;
             border-radius: 5px;
             border: none;
-            outline: none;
         }
+
         button {
             background: var(--secondary);
             color: white;
@@ -65,70 +81,71 @@
             cursor: pointer;
             transition: 0.3s;
         }
+
         button:disabled { background: #7f8c8d; cursor: not-allowed; }
 
-        /* Scoring Table */
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #555; padding: 10px; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em; }
+        th, td { border: 1px solid #555; padding: 8px; text-align: center; }
         .total-row { font-weight: bold; background: rgba(39, 174, 96, 0.3); }
 
-        /* Input Controls */
-        .bid-select { width: 50px; background: white; color: black; }
-        .btn-yes { background: var(--secondary); padding: 5px 10px; border-radius: 5px; margin: 2px; }
-        .btn-no { background: var(--danger); padding: 5px 10px; border-radius: 5px; margin: 2px; }
-
-        /* Winner Screen */
-        .winner-cup { font-size: 80px; color: gold; margin-bottom: 20px; }
+        .bid-select { width: 60px; padding: 5px; border-radius: 5px; }
+        .status-icon { font-size: 1.2em; margin-left: 5px; }
+        
+        .player-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.05);
+            padding: 8px;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
     <div id="splash-screen" class="container">
-        <img src="logo.png" alt="Logo">
+        <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/150?text=Ne3me+Cell'">
         <h2>400 Score</h2>
-		<h3>ne3me cell</h3>
-		<h3>+961 76 304 120</h3>
+        <p>Ne3me Cell</p>
+        <p dir="ltr">+961 76 304 120</p>
     </div>
 
     <div id="name-entry" class="container hidden">
-        <h2>400</h2>
-		<h1>PLAYERS NAME</h1>
+        <h1>PLAYERS NAMES</h1>
         <div class="group-box">
             <h3>Group 1</h3>
-            <input type="text" id="p1" placeholder="Player 1 Name" oninput="validateForm()">
-            <input type="text" id="p2" placeholder="Player 2 Name" oninput="validateForm()">
+            <input type="text" id="p1" placeholder="Player 1" oninput="validateForm()">
+            <input type="text" id="p2" placeholder="Player 2" oninput="validateForm()">
         </div>
         <div class="group-box">
             <h3>Group 2</h3>
-            <input type="text" id="p3" placeholder="Player 3 Name" oninput="validateForm()">
-            <input type="text" id="p4" placeholder="Player 4 Name" oninput="validateForm()">
+            <input type="text" id="p3" placeholder="Player 3" oninput="validateForm()">
+            <input type="text" id="p4" placeholder="Player 4" oninput="validateForm()">
         </div>
         <button id="start-btn" disabled onclick="startGame()">Start Game</button>
     </div>
 
     <div id="score-sheet" class="container hidden">
-        <h1>400 Score</h1>
-        <h3 id="round-title">Round 1</h3>
+        <div id="forced-indicator" class="hidden"></div>
+        <h2 id="round-title">Round 1</h2>
+        
         <table>
-            <thead>
-                <tr id="player-headers"></tr>
-            </thead>
-            <tbody id="score-body">
-                </tbody>
-            <tfoot>
-                <tr class="total-row" id="total-scores"></tr>
-            </tfoot>
+            <thead><tr id="player-headers"></tr></thead>
+            <tbody id="score-body"></tbody>
+            <tfoot><tr class="total-row" id="total-scores"></tr></tfoot>
         </table>
 
-        <div id="round-entry" class="group-box">
-            <h4 id="entry-title">Enter Round Results</h4>
+        <div class="group-box">
+            <h4>Enter Round Results</h4>
             <div id="player-inputs"></div>
+            <div id="total-bid-info" style="margin-top:10px; font-weight:bold;">Total Bids: 0</div>
             <button onclick="submitRound()" id="submit-round-btn" style="margin-top: 15px;">Next Round</button>
         </div>
     </div>
 
     <div id="winner-page" class="container hidden">
-        <div class="winner-cup">🏆</div>
+        <h1 style="font-size: 3em;">🏆</h1>
         <h1 id="winner-text">Winners!</h1>
         <button onclick="location.reload()">New Game</button>
     </div>
@@ -137,26 +154,24 @@
         let players = [];
         let scores = [0, 0, 0, 0];
         let currentRound = 1;
-
-        // Bid Multipliers
+        let tempResults = [null, null, null, null];
         const bidPoints = { 2:2, 3:3, 4:4, 5:10, 6:12, 7:14, 8:16, 9:27, 10:40, 11:44, 12:48, 13:52 };
 
-        // 1. Splash Screen Logic
         setTimeout(() => {
             document.getElementById('splash-screen').classList.add('hidden');
             document.getElementById('name-entry').classList.remove('hidden');
         }, 2000);
 
-        // 2. Form Validation
         function validateForm() {
-            const p1 = document.getElementById('p1').value.trim();
-            const p2 = document.getElementById('p2').value.trim();
-            const p3 = document.getElementById('p3').value.trim();
-            const p4 = document.getElementById('p4').value.trim();
-            document.getElementById('start-btn').disabled = !(p1 && p2 && p3 && p4);
+            const names = [
+                document.getElementById('p1').value.trim(),
+                document.getElementById('p2').value.trim(),
+                document.getElementById('p3').value.trim(),
+                document.getElementById('p4').value.trim()
+            ];
+            document.getElementById('start-btn').disabled = names.some(n => n === "");
         }
 
-        // 3. Start Game
         function startGame() {
             players = [
                 document.getElementById('p1').value,
@@ -171,59 +186,107 @@
         }
 
         function setupTable() {
-            let headers = "<th>Round</th>";
+            let headers = "<th>R</th>";
             players.forEach(p => headers += `<th>${p}</th>`);
             document.getElementById('player-headers').innerHTML = headers;
             updateTotals();
         }
 
+        function isAnyoneAbove30() {
+            return scores.some(s => s >= 30);
+        }
+
         function setupInputs() {
             let html = "";
-            players.forEach((p, index) => {
+            const anyoneAbove30 = isAnyoneAbove30();
+            const indicator = document.getElementById('forced-indicator');
+            
+            if(anyoneAbove30) {
+                indicator.innerHTML = `<span class="forced-badge">إجباري (Minimum 13)</span>`;
+                indicator.classList.remove('hidden');
+            } else {
+                indicator.classList.add('hidden');
+            }
+
+            players.forEach((p, i) => {
+                let minBid = 2;
+                if (scores[i] >= 40) minBid = 4;
+                else if (scores[i] >= 30) minBid = 3;
+
+                let options = "";
+                for (let b = minBid; b <= 13; b++) {
+                    options += `<option value="${b}">${b}</option>`;
+                }
+
                 html += `
-                    <div style="margin-bottom:10px;">
-                        <span>${p}: </span>
-                        <select id="bid-${index}" class="bid-select">
-                            ${Object.keys(bidPoints).map(b => `<option value="${b}">${b}</option>`).join('')}
-                        </select>
-                        <button class="btn-yes" onclick="setResult(${index}, true)">Yes</button>
-                        <button class="btn-no" onclick="setResult(${index}, false)">No</button>
-                        <span id="status-${index}" style="margin-left:10px;">-</span>
+                    <div class="player-row">
+                        <div style="text-align:left;">
+                            <strong>${p}</strong><br>
+                            <small>Score: ${scores[i]}</small>
+                        </div>
+                        <div>
+                            <select id="bid-${i}" class="bid-select" onchange="updateTotalBidCount()">
+                                ${options}
+                            </select>
+                            <button style="padding:5px 10px; background:#27ae60;" onclick="setResult(${i}, true)">✔</button>
+                            <button style="padding:5px 10px; background:#e74c3c;" onclick="setResult(${i}, false)">✖</button>
+                            <span id="status-${i}" class="status-icon">-</span>
+                        </div>
                     </div>
                 `;
             });
             document.getElementById('player-inputs').innerHTML = html;
-            window.tempResults = [null, null, null, null];
+            tempResults = [null, null, null, null];
+            updateTotalBidCount();
+        }
+
+        function updateTotalBidCount() {
+            let total = 0;
+            for(let i=0; i<4; i++) {
+                total += parseInt(document.getElementById(`bid-${i}`).value);
+            }
+            const minRequired = isAnyoneAbove30() ? 13 : 12;
+            const info = document.getElementById('total-bid-info');
+            info.innerText = `Total Bids: ${total} (Required: ${minRequired})`;
+            info.style.color = total >= minRequired ? "#27ae60" : "#e74c3c";
+            return total;
         }
 
         function setResult(index, won) {
-            const bid = document.getElementById(`bid-${index}`).value;
-            const points = bidPoints[bid];
-            window.tempResults[index] = won ? points : -points;
+            const bid = parseInt(document.getElementById(`bid-${index}`).value);
+            let points;
+
+            // قانون الـ 30: إذا اللاعب فوق الـ 30 النقاط لا تضاعف
+            if (scores[index] >= 30) {
+                points = bid;
+            } else {
+                points = bidPoints[bid] || bid;
+            }
+
+            tempResults[index] = won ? points : -points;
             document.getElementById(`status-${index}`).innerText = won ? "✅" : "❌";
         }
 
-        // 4. Submit Round
         function submitRound() {
-            if (window.tempResults.includes(null)) {
-                alert("Please select Yes or No for all players!");
+            const minRequired = isAnyoneAbove30() ? 13 : 12;
+            if (updateTotalBidCount() < minRequired) {
+                alert(`مجموع المزايدات يجب أن يكون على الأقل ${minRequired}!`);
                 return;
             }
 
-            // Total bid limit 13 check
-            let totalBids = 0;
-            players.forEach((_, i) => totalBids += parseInt(document.getElementById(`bid-${i}`).value));
-            
-            // Logic: In 400, total tricks are 13.
-            // (Note: usually we check total tricks taken, but per your rule, we mark results)
+            if (tempResults.includes(null)) {
+                alert("يرجى تحديد (✔) أو (✖) لكل اللاعبين!");
+                return;
+            }
 
             const row = document.createElement('tr');
-            row.innerHTML = `<td>R${currentRound}</td>` + window.tempResults.map(r => `<td>${r}</td>`).join('');
+            row.innerHTML = `<td>${currentRound}</td>` + tempResults.map(r => `<td>${r}</td>`).join('');
             document.getElementById('score-body').appendChild(row);
 
-            window.tempResults.forEach((val, i) => scores[i] += val);
+            tempResults.forEach((val, i) => scores[i] += val);
             updateTotals();
-            checkWinner();
+            
+            if (checkWinner()) return;
 
             currentRound++;
             document.getElementById('round-title').innerText = `Round ${currentRound}`;
@@ -231,23 +294,27 @@
         }
 
         function updateTotals() {
-            let html = "<td>Total</td>";
+            let html = "<td>Sum</td>";
             scores.forEach(s => html += `<td>${s}</td>`);
             document.getElementById('total-scores').innerHTML = html;
         }
 
-        // 5. Winning Conditions
         function checkWinner() {
-            // Group 1: P1 & P2 | Group 2: P3 & P4
-            const check = (idx, partnerIdx) => {
-                return (scores[idx] >= 41 && scores[partnerIdx] >= 0);
-            };
+            const g1Wins = (scores[0] >= 41 || scores[1] >= 41) && (scores[0] >= 0 && scores[1] >= 0);
+            const g2Wins = (scores[2] >= 41 || scores[3] >= 41) && (scores[2] >= 0 && scores[3] >= 0);
 
-            if (check(0, 1) || check(1, 0)) {
-                showWinner(`${players[0]} & ${players[1]}`);
-            } else if (check(2, 3) || check(3, 2)) {
-                showWinner(`${players[2]} & ${players[3]}`);
+            if (g1Wins || g2Wins) {
+                let winnerNames = "";
+                if (g1Wins && g2Wins) {
+                    winnerNames = (scores[0]+scores[1] > scores[2]+scores[3]) ? 
+                        `${players[0]} & ${players[1]}` : `${players[2]} & ${players[3]}`;
+                } else {
+                    winnerNames = g1Wins ? `${players[0]} & ${players[1]}` : `${players[2]} & ${players[3]}`;
+                }
+                showWinner(winnerNames);
+                return true;
             }
+            return false;
         }
 
         function showWinner(names) {
