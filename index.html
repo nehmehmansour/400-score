@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>400 Score</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>400 Score - Ne3me Cell</title>
     
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo1.png">
+    <link rel="icon" type="image/png" href="logo1.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -15,12 +15,11 @@
             --primary: #2c3e50;
             --secondary: #27ae60;
             --danger: #e74c3c;
-            --warning: #f1c40f;
-            --light: #ecf0f1;
+            --dark-overlay: rgba(0, 0, 0, 0.85);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--primary);
             color: white;
             margin: 0;
@@ -31,95 +30,146 @@
         }
 
         .container {
-            width: 95%;
-            max-width: 500px;
+            width: 92%;
+            max-width: 450px;
             background: rgba(255, 255, 255, 0.1);
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center;
+            position: relative;
         }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
 
-        #splash-screen img { width: 120px; height: auto; margin-bottom: 15px; border-radius: 20px; }
+        /* Rules Overlay Styling */
+        #rules-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark-overlay);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-        h1 { margin-bottom: 10px; color: var(--secondary); }
+        .rules-box {
+            width: 85%;
+            max-width: 400px;
+            max-height: 80vh;
+            background: #1a252f;
+            border: 2px solid var(--secondary);
+            border-radius: 15px;
+            position: relative;
+            padding: 25px 15px 15px 15px;
+            overflow-y: auto;
+            text-align: left;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .close-rules {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* Rules Text Styling */
+        .rules-box h2 { color: var(--secondary); font-size: 1.2em; border-bottom: 1px solid #444; margin-top: 0; }
+        .rules-box h3 { color: var(--secondary); font-size: 1em; margin-bottom: 5px; }
+        .rules-box p, .rules-box li { font-size: 0.85em; color: #ccc; line-height: 1.4; }
+
+        /* Main Game UI */
+        #splash-screen img { width: 100px; border-radius: 15px; margin-bottom: 10px; }
+        .main-header { font-size: 24px; font-weight: bold; color: var(--secondary); margin: 0; }
+        .sub-header { font-size: 10px; opacity: 0.7; letter-spacing: 2px; margin-bottom: 15px; font-weight: bold; }
+
+        .rules-wrapper {
+            position: absolute;
+            top: 10px; right: 10px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .rules-img { width: 35px; height: 35px; cursor: pointer; border-radius: 5px; }
+        .rules-label { font-size: 7px; text-transform: uppercase; margin-top: 2px; opacity: 0.8; }
+
         .group-box {
             background: rgba(0,0,0,0.2);
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 10px;
             border-radius: 10px;
             border: 1px solid var(--secondary);
         }
-        
-        .forced-badge {
-            background: var(--danger);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
 
         input[type="text"] {
-            width: 80%;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            border: none;
+            width: 85%; padding: 10px; margin: 5px 0; border-radius: 8px; border: none; font-size: 15px;
         }
 
         button {
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: 0.3s;
+            background: var(--secondary); color: white; border: none;
+            padding: 10px 25px; border-radius: 20px; font-size: 16px; cursor: pointer;
         }
 
-        button:disabled { background: #7f8c8d; cursor: not-allowed; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.8em; }
+        th, td { border: 1px solid #555; padding: 6px; text-align: center; }
+        .total-row { font-weight: bold; background: rgba(39, 174, 96, 0.3); color: var(--secondary); }
 
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9em; }
-        th, td { border: 1px solid #555; padding: 8px; text-align: center; }
-        .total-row { font-weight: bold; background: rgba(39, 174, 96, 0.3); }
-
-        .bid-select { width: 60px; padding: 5px; border-radius: 5px; }
-        .status-icon { font-size: 1.2em; margin-left: 5px; }
-        
         .player-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            background: rgba(255,255,255,0.05);
-            padding: 8px;
-            border-radius: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.05); padding: 8px; margin-bottom: 6px; border-radius: 8px;
         }
+
+        .bid-select { width: 60px; padding: 4px; font-size: 14px; }
+        .forced-badge { background: var(--danger); padding: 3px 8px; border-radius: 4px; font-size: 10px; margin-bottom: 8px; display: inline-block; }
     </style>
 </head>
 <body>
 
+    <div id="rules-overlay" class="hidden">
+        <div class="rules-box">
+            <button class="close-rules" onclick="toggleRules()">X</button>
+            <h2>RULES</h2>
+            <p>A renowned partnership card game for 4 players, widely played in Lebanon. The players sit opposite each other at the gaming table, forming 2 teams. The game employs a standard deck of playing cards (52 cards, excluding the 2 Jokers).</p>
+            <h3>Game Objective</h3>
+            <p>The ultimate goal of the game is for one of the teams to reach 41 points or more through winning “Tricks.”</p>
+            <h3>Cards and Distribution</h3>
+            <p>Each player receives 13 cards: 2 < 3 < 4 < 5 < 6 < 7 < 8 < 9 < 10 < J < Q < K < A.</p>
+            <h3>Bidding</h3>
+            <p>If total bids < 11, cards are redistributed.</p>
+            <ul>
+                <li>Score 30-39: Min bid 3. Min Total 12.</li>
+                <li>Score 40-49: Min bid 4. Min Total 13.</li>
+                <li>Score 50+: Min bid 5. Min Total 14.</li>
+            </ul>
+            <h3>Scoring</h3>
+            <p>Standard: 2=2, 3=3, 4=4, 5=10, 6=12, 7=14, 8=16, 9=27, 10=40, 11=44, 12=48, 13=52.</p>
+            <p>At 30+ Score: Bid of 5 = 5 pts, 6 = 6 pts.</p>
+            <p>Winning: Team reaches 41+, partner must be > 0.</p>
+        </div>
+    </div>
+
     <div id="splash-screen" class="container">
-        <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/150?text=Ne3me+Cell'">
+        <img src="logo.png" alt="Logo" onerror="this.src='https://via.placeholder.com/100?text=Logo'">
         <h2>400 Score</h2>
-        <p>Ne3me Cell</p>
-        <p dir="ltr">+961 76 304 120</p>
+        <p>NE3ME CELL</p>
+        <p dir="ltr" style="font-size: 12px;">+961 76 304 120</p>
     </div>
 
     <div id="name-entry" class="container hidden">
-        <h1>PLAYERS NAMES</h1>
+        <div class="main-header">PLAYERS NAMES</div>
+        <div class="sub-header">NE3ME CELL</div>
         <div class="group-box">
-            <h3>Group 1</h3>
             <input type="text" id="p1" placeholder="Player 1" oninput="validateForm()">
             <input type="text" id="p2" placeholder="Player 2" oninput="validateForm()">
         </div>
         <div class="group-box">
-            <h3>Group 2</h3>
             <input type="text" id="p3" placeholder="Player 3" oninput="validateForm()">
             <input type="text" id="p4" placeholder="Player 4" oninput="validateForm()">
         </div>
@@ -127,8 +177,15 @@
     </div>
 
     <div id="score-sheet" class="container hidden">
+        <div class="rules-wrapper" onclick="toggleRules()">
+            <img src="logo2.png" class="rules-img" alt="Rules" onerror="this.src='https://via.placeholder.com/35?text=R'">
+            <span class="rules-label">rules</span>
+        </div>
+        
+        <div class="main-header">400 SCORE</div>
+        <div class="sub-header">NE3ME CELL</div>
+        
         <div id="forced-indicator" class="hidden"></div>
-        <h2 id="round-title">Round 1</h2>
         
         <table>
             <thead><tr id="player-headers"></tr></thead>
@@ -137,190 +194,126 @@
         </table>
 
         <div class="group-box">
-            <h4>Enter Round Results</h4>
             <div id="player-inputs"></div>
-            <div id="total-bid-info" style="margin-top:10px; font-weight:bold;">Total Bids: 0</div>
-            <button onclick="submitRound()" id="submit-round-btn" style="margin-top: 15px;">Next Round</button>
+            <div id="total-bid-info" style="margin-top:8px; font-weight:bold; font-size:12px;">Total Bids: 0</div>
+            <button onclick="submitRound()" style="margin-top: 10px; width:100%; font-size:14px;">Next Round</button>
         </div>
     </div>
 
     <div id="winner-page" class="container hidden">
-        <h1 style="font-size: 3em;">🏆</h1>
-        <h1 id="winner-text">Winners!</h1>
-        <button onclick="location.reload()">New Game</button>
+        <h1 style="font-size: 3em; margin:0;">🏆</h1>
+        <div class="main-header" id="winner-text">Winners!</div>
+        <button onclick="location.reload()" style="margin-top:20px;">New Game</button>
     </div>
 
     <script>
-        let players = [];
-        let scores = [0, 0, 0, 0];
-        let currentRound = 1;
-        let tempResults = [null, null, null, null];
-        const bidPoints = { 2:2, 3:3, 4:4, 5:10, 6:12, 7:14, 8:16, 9:27, 10:40, 11:44, 12:48, 13:52 };
+        let players = [], scores = [0, 0, 0, 0], currentRound = 1, tempResults = [null, null, null, null];
+        const bidStd = { 2:2, 3:3, 4:4, 5:10, 6:12, 7:14, 8:16, 9:27, 10:40, 11:44, 12:48, 13:52 };
+        const bid30Plus = { 2:2, 3:3, 4:4, 5:5, 6:6, 7:14, 8:16, 9:27, 10:40, 11:44, 12:48, 13:52 };
 
         setTimeout(() => {
             document.getElementById('splash-screen').classList.add('hidden');
             document.getElementById('name-entry').classList.remove('hidden');
-        }, 2000);
+        }, 3000);
+
+        function toggleRules() { document.getElementById('rules-overlay').classList.toggle('hidden'); }
 
         function validateForm() {
-            const names = [
-                document.getElementById('p1').value.trim(),
-                document.getElementById('p2').value.trim(),
-                document.getElementById('p3').value.trim(),
-                document.getElementById('p4').value.trim()
-            ];
-            document.getElementById('start-btn').disabled = names.some(n => n === "");
+            const vals = ['p1','p2','p3','p4'].map(id => document.getElementById(id).value.trim());
+            document.getElementById('start-btn').disabled = vals.some(v => v === "");
         }
 
         function startGame() {
-            players = [
-                document.getElementById('p1').value,
-                document.getElementById('p2').value,
-                document.getElementById('p3').value,
-                document.getElementById('p4').value
-            ];
+            players = ['p1','p2','p3','p4'].map(id => document.getElementById(id).value);
             document.getElementById('name-entry').classList.add('hidden');
             document.getElementById('score-sheet').classList.remove('hidden');
-            setupTable();
-            setupInputs();
+            setupTable(); setupInputs();
         }
 
         function setupTable() {
-            let headers = "<th>R</th>";
-            players.forEach(p => headers += `<th>${p}</th>`);
-            document.getElementById('player-headers').innerHTML = headers;
+            let h = "<th>Round</th>";
+            players.forEach(p => h += `<th>${p}</th>`);
+            document.getElementById('player-headers').innerHTML = h;
             updateTotals();
         }
 
-        function isAnyoneAbove30() {
-            return scores.some(s => s >= 30);
+        function getReqTotal() {
+            const m = Math.max(...scores);
+            return m >= 50 ? 14 : m >= 40 ? 13 : m >= 30 ? 12 : 11;
         }
 
         function setupInputs() {
-            let html = "";
-            const anyoneAbove30 = isAnyoneAbove30();
-            const indicator = document.getElementById('forced-indicator');
-            
-            if(anyoneAbove30) {
-                indicator.innerHTML = `<span class="forced-badge">إجباري (Minimum 13)</span>`;
-                indicator.classList.remove('hidden');
-            } else {
-                indicator.classList.add('hidden');
-            }
+            let html = ""; const req = getReqTotal();
+            const ind = document.getElementById('forced-indicator');
+            if(scores.some(s => s >= 30)) {
+                ind.innerHTML = `<span class="forced-badge">FORCED (Min Total: ${req})</span>`;
+                ind.classList.remove('hidden');
+            } else ind.classList.add('hidden');
 
             players.forEach((p, i) => {
-                let minBid = 2;
-                if (scores[i] >= 40) minBid = 4;
-                else if (scores[i] >= 30) minBid = 3;
-
-                let options = "";
-                for (let b = minBid; b <= 13; b++) {
-                    options += `<option value="${b}">${b}</option>`;
-                }
-
+                let minB = scores[i] >= 50 ? 5 : scores[i] >= 40 ? 4 : scores[i] >= 30 ? 3 : 2;
+                let opts = "";
+                for(let b=minB; b<=13; b++) opts += `<option value="${b}">${b}</option>`;
                 html += `
                     <div class="player-row">
-                        <div style="text-align:left;">
-                            <strong>${p}</strong><br>
-                            <small>Score: ${scores[i]}</small>
-                        </div>
+                        <div style="text-align:left;"><strong style="font-size:13px;">${p}</strong><br><small>Pts: ${scores[i]}</small></div>
                         <div>
-                            <select id="bid-${i}" class="bid-select" onchange="updateTotalBidCount()">
-                                ${options}
-                            </select>
-                            <button style="padding:5px 10px; background:#27ae60;" onclick="setResult(${i}, true)">✔</button>
-                            <button style="padding:5px 10px; background:#e74c3c;" onclick="setResult(${i}, false)">✖</button>
-                            <span id="status-${i}" class="status-icon">-</span>
+                            <select id="bid-${i}" class="bid-select" onchange="updateTotalBidCount()">${opts}</select>
+                            <button style="padding:4px 8px; background:#27ae60; margin-left:3px; font-size:12px;" onclick="setResult(${i}, true)">✔</button>
+                            <button style="padding:4px 8px; background:#e74c3c; font-size:12px;" onclick="setResult(${i}, false)">✖</button>
+                            <span id="status-${i}" style="margin-left:3px; font-size:12px;">-</span>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
             document.getElementById('player-inputs').innerHTML = html;
-            tempResults = [null, null, null, null];
-            updateTotalBidCount();
+            tempResults = [null, null, null, null]; updateTotalBidCount();
         }
 
         function updateTotalBidCount() {
-            let total = 0;
-            for(let i=0; i<4; i++) {
-                total += parseInt(document.getElementById(`bid-${i}`).value);
-            }
-            const minRequired = isAnyoneAbove30() ? 13 : 12;
+            let t = 0;
+            for(let i=0; i<4; i++) t += parseInt(document.getElementById(`bid-${i}`).value);
+            const req = getReqTotal();
             const info = document.getElementById('total-bid-info');
-            info.innerText = `Total Bids: ${total} (Required: ${minRequired})`;
-            info.style.color = total >= minRequired ? "#27ae60" : "#e74c3c";
-            return total;
+            info.innerText = `Total Bids: ${t} (Required: ${req})`;
+            info.style.color = t >= req ? "#27ae60" : "#e74c3c";
+            return t;
         }
 
-        function setResult(index, won) {
-            const bid = parseInt(document.getElementById(`bid-${index}`).value);
-            let points;
-
-            // قانون الـ 30: إذا اللاعب فوق الـ 30 النقاط لا تضاعف
-            if (scores[index] >= 30) {
-                points = bid;
-            } else {
-                points = bidPoints[bid] || bid;
-            }
-
-            tempResults[index] = won ? points : -points;
-            document.getElementById(`status-${index}`).innerText = won ? "✅" : "❌";
+        function setResult(i, won) {
+            const b = parseInt(document.getElementById(`bid-${i}`).value);
+            const pts = (scores[i] >= 30 ? bid30Plus[b] : bidStd[b]) || b;
+            tempResults[i] = won ? pts : -pts;
+            document.getElementById(`status-${i}`).innerText = won ? "✅" : "❌";
         }
 
         function submitRound() {
-            const minRequired = isAnyoneAbove30() ? 13 : 12;
-            if (updateTotalBidCount() < minRequired) {
-                alert(`مجموع المزايدات يجب أن يكون على الأقل ${minRequired}!`);
-                return;
-            }
-
-            if (tempResults.includes(null)) {
-                alert("يرجى تحديد (✔) أو (✖) لكل اللاعبين!");
-                return;
-            }
-
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>${currentRound}</td>` + tempResults.map(r => `<td>${r}</td>`).join('');
+            if(updateTotalBidCount() < getReqTotal()) { alert("Total bids must be at least " + getReqTotal()); return; }
+            if(tempResults.includes(null)) { alert("Mark Win/Loss for all players!"); return; }
+            let row = document.createElement('tr');
+            row.innerHTML = `<td>${currentRound}</td>` + tempResults.map(r => `<td style="color:${r<0?'#e74c3c':'white'}">${r}</td>`).join('');
             document.getElementById('score-body').appendChild(row);
-
-            tempResults.forEach((val, i) => scores[i] += val);
+            tempResults.forEach((v, i) => scores[i] += v);
             updateTotals();
-            
-            if (checkWinner()) return;
-
-            currentRound++;
-            document.getElementById('round-title').innerText = `Round ${currentRound}`;
-            setupInputs();
+            if(!checkWinner()) { currentRound++; setupInputs(); }
         }
 
         function updateTotals() {
-            let html = "<td>Sum</td>";
-            scores.forEach(s => html += `<td>${s}</td>`);
-            document.getElementById('total-scores').innerHTML = html;
+            let h = "<td>Total</td>";
+            scores.forEach(s => h += `<td>${s}</td>`);
+            document.getElementById('total-scores').innerHTML = h;
         }
 
         function checkWinner() {
-            const g1Wins = (scores[0] >= 41 || scores[1] >= 41) && (scores[0] >= 0 && scores[1] >= 0);
-            const g2Wins = (scores[2] >= 41 || scores[3] >= 41) && (scores[2] >= 0 && scores[3] >= 0);
-
-            if (g1Wins || g2Wins) {
-                let winnerNames = "";
-                if (g1Wins && g2Wins) {
-                    winnerNames = (scores[0]+scores[1] > scores[2]+scores[3]) ? 
-                        `${players[0]} & ${players[1]}` : `${players[2]} & ${players[3]}`;
-                } else {
-                    winnerNames = g1Wins ? `${players[0]} & ${players[1]}` : `${players[2]} & ${players[3]}`;
-                }
-                showWinner(winnerNames);
+            const win = (m, p) => scores[m] >= 41 && scores[p] > 0;
+            const t1 = win(0, 1) || win(1, 0), t2 = win(2, 3) || win(3, 2);
+            if(t1 || t2) {
+                let msg = (t1 && t2) ? (scores[0]+scores[1] > scores[2]+scores[3] ? players[0]+" & "+players[1] : players[2]+" & "+players[3]) : (t1 ? players[0]+" & "+players[1] : players[2]+" & "+players[3]);
+                document.getElementById('score-sheet').classList.add('hidden');
+                document.getElementById('winner-page').classList.remove('hidden');
+                document.getElementById('winner-text').innerText = msg + " WIN!";
                 return true;
             }
             return false;
-        }
-
-        function showWinner(names) {
-            document.getElementById('score-sheet').classList.add('hidden');
-            document.getElementById('winner-page').classList.remove('hidden');
-            document.getElementById('winner-text').innerText = `${names} WIN!`;
         }
     </script>
 </body>
